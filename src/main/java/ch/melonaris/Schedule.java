@@ -41,13 +41,7 @@ public class Schedule {
     }
 
     public Schedule(String timezone, String eventStart, String eventEnd) {
-        this.talks = new ArrayList<>();
-        this.rooms = new ArrayList<>();
-        this.speakers = new ArrayList<>();
-        this.timezone = ZoneId.of(timezone);
-        this.eventStart = LocalDate.parse(InputValidation.date(eventStart), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        this.eventEnd = LocalDate.parse(InputValidation.date(eventEnd), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        this.numberOfDays = getDayNumber();
+        new Schedule(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), timezone, eventStart, eventEnd);
     }
 
     public static Schedule loadData(String dataToLoad) {
