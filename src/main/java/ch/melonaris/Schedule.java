@@ -106,22 +106,32 @@ public class Schedule {
     public Schedule getScheduleOfRooms(String... rooms) {
         ArrayList<Talk> talksOfRooms = new ArrayList<>();
         ArrayList<Room> roomsOfSchedule = new ArrayList<>();
+        Room room;
         Pattern roomNumberFormat = Pattern.compile("^\\d+$");
         Matcher roomNumber;
 
+
         for (Talk talk : talks) {
-            for (String room : rooms) {
-                roomNumber = roomNumberFormat.matcher(room);
+            for (String roomIdentifier : rooms) {
+                roomNumber = roomNumberFormat.matcher(roomIdentifier);
 
                 if (roomNumber.find()) {
-                    if (talk.getRoom() == Integer.parseInt(room)) {
+                    if (talk.getRoom() == Integer.parseInt(roomIdentifier)) {
                         talksOfRooms.add(talk);
-                        roomsOfSchedule.add(getRoom(Integer.parseInt(room)));
+                        room = getRoom(Integer.parseInt(roomIdentifier));
+
+                        if (!roomsOfSchedule.contains(room)) {
+                            roomsOfSchedule.add(room);
+                        }
                     }
                 } else {
-                    if (talk.getRoom() == Objects.requireNonNull(getRoom(room)).getId()) {
+                    if (talk.getRoom() == Objects.requireNonNull(getRoom(roomIdentifier)).getId()) {
                         talksOfRooms.add(talk);
-                        roomsOfSchedule.add(getRoom(room));
+                        room = getRoom(roomIdentifier);
+
+                        if (!roomsOfSchedule.contains(room)) {
+                            roomsOfSchedule.add(room);
+                        }
                     }
                 }
             }
