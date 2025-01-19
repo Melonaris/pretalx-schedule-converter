@@ -5,6 +5,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class InputValidation {
+    private static Scanner scanner;
+
+    public void openScanner() {
+        scanner = new Scanner(System.in);
+    }
+
+    public void closeScanner() {
+        scanner.close();
+    }
+
+    public Scanner getScanner() {
+        return scanner;
+    }
 
     public static String date(String dateString) {
         Scanner scanner = new Scanner(System.in);
