@@ -92,7 +92,7 @@ public class Schedule {
         }
     }
 
-    public ArrayList<Talk> getTalksOfDays(int ... dayNumbers) {
+    public Schedule getScheduleOfDays(int... dayNumbers) {
         ArrayList<Talk> talksOfDay = new ArrayList<>();
 
         for (Talk talk : talks) {
@@ -102,11 +102,12 @@ public class Schedule {
                 }
             }
         }
-        return talksOfDay;
+        return new Schedule(talksOfDay, this.rooms, this.speakers, this.timezone, this.eventStart, this.eventEnd);
     }
 
-    public ArrayList<Talk> getTalksInRooms(String ... rooms) {
+    public Schedule getScheduleOfRooms(String... rooms) {
         ArrayList<Talk> talksOfRooms = new ArrayList<>();
+        ArrayList<Room> roomsOfSchedule = new ArrayList<>();
         Pattern roomNumberFormat = Pattern.compile("^\\d+$");
         Matcher roomNumber;
 
@@ -117,15 +118,18 @@ public class Schedule {
                 if (roomNumber.find()) {
                     if (talk.getRoom() == Integer.parseInt(room)) {
                         talksOfRooms.add(talk);
+                        roomsOfSchedule.add(getRoom(Integer.parseInt(room)));
                     }
                 } else {
                     if (talk.getRoom() == Objects.requireNonNull(getRoom(room)).getId()) {
                         talksOfRooms.add(talk);
+                        roomsOfSchedule.add(getRoom(room));
                     }
                 }
             }
         }
-        return talksOfRooms;
+
+        return new Schedule(talksOfRooms, roomsOfSchedule, this.speakers, this.timezone, this.eventStart, this.eventEnd);
     }
 
     private Room getRoom(String roomName) {
