@@ -131,20 +131,49 @@ public class Schedule {
 
         return new Schedule(talksOfRooms, roomsOfSchedule, this.speakers, this.timezone, this.eventStart, this.eventEnd);
     }
-
-    private Room getRoom(String roomName) {
-        Pattern containsRoomNameFormat = Pattern.compile(".*" + roomName + ".*");
-        Matcher containsRoomName;
-
-        // add check if multiple are true
-
+    private Room getRoom(int roomID) {
         for (Room room : rooms) {
-            containsRoomName = containsRoomNameFormat.matcher(room.getName());
-            if (containsRoomName.find()) {
+            if (room.getId() == roomID) {
                 return room;
             }
         }
         return null;
+    }
+
+    private Room getRoom(String roomName) {
+        java.util.Scanner scanner = Scanner.getScanner();
+        ArrayList<Room> matchingRooms = new ArrayList<>();
+        Pattern containsRoomNameFormat;
+        Matcher containsRoomName;
+
+        do {
+            containsRoomNameFormat = Pattern.compile(".*" + roomName + ".*");
+
+            for (Room room : rooms) {
+                containsRoomName = containsRoomNameFormat.matcher(room.getName());
+                if (containsRoomName.find()) {
+                    matchingRooms.add(room);
+                }
+            }
+
+            if (matchingRooms.size() == 1) {
+                break;
+            }
+
+            if (matchingRooms.size() > 2) {
+                System.out.println("Error: Multiple matches found one expected!");
+            }
+
+            if (matchingRooms.isEmpty()) {
+                System.out.println("Error: No match found one expected!");
+            }
+
+            System.out.println("Re-enter room name:");
+            matchingRooms.clear();
+            roomName = scanner.nextLine();
+        } while (true);
+
+        return matchingRooms.getFirst();
     }
 
     private int getDayNumber() {
