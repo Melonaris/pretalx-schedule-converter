@@ -7,15 +7,15 @@ import java.util.regex.Pattern;
 public class InputValidation {
     private static Scanner scanner;
 
-    public void openScanner() {
+    public static void openScanner() {
         scanner = new Scanner(System.in);
     }
 
-    public void closeScanner() {
+    public static void closeScanner() {
         scanner.close();
     }
 
-    public Scanner getScanner() {
+    public static Scanner getScanner() {
         return scanner;
     }
 
