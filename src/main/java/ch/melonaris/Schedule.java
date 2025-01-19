@@ -13,8 +13,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// replace abstract with description!!!
-
 public class Schedule {
     private ArrayList<Talk> talks;
     private ArrayList<Room> rooms;
@@ -42,6 +40,16 @@ public class Schedule {
 
     public Schedule(String timezone, String eventStart, String eventEnd) {
         new Schedule(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), timezone, eventStart, eventEnd);
+    }
+
+    public Schedule(ArrayList<Talk> talks, ArrayList<Room> rooms, ArrayList<Speaker> speakers, ZoneId timezone, LocalDate eventStart, LocalDate eventEnd) {
+        this.talks = talks;
+        this.rooms = rooms;
+        this.speakers = speakers;
+        this.timezone = timezone;
+        this.eventStart = eventStart;
+        this.eventEnd = eventEnd;
+        this.numberOfDays = getDayNumber();
     }
 
     public static Schedule loadData(String dataToLoad) {
