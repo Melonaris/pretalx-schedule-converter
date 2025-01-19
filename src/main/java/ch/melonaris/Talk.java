@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class Talk implements Comparator<ZonedDateTime> {
+public class Talk implements Comparable<Talk> {
     private String code;
     private int id;
     private String title;
@@ -137,11 +137,16 @@ public class Talk implements Comparator<ZonedDateTime> {
     }
 
     @Override
-    public int compare(ZonedDateTime o1, ZonedDateTime o2) {
-        if (o1.isBefore(o2)) {
-            return 1;
-        } else if (o1.isAfter(o2)) {
+    public int compareTo(Talk that) {
+        if (this.getStart().isBefore(that.getStart())) {
             return -1;
+        } else if (this.getStart().isAfter(that.getStart())) {
+            return 1;
+        }
+        if (this.getEnd().isBefore(that.getEnd())) {
+            return -1;
+        } else if (this.getEnd().isAfter(that.getEnd())){
+            return 1;
         }
         return 0;
     }
