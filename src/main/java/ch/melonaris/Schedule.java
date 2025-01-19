@@ -140,6 +140,18 @@ public class Schedule {
         talksOfRooms.sort(null);
         return new Schedule(talksOfRooms, roomsOfSchedule, this.speakers, this.timezone, this.eventStart, this.eventEnd);
     }
+
+    public void printDiscordTimestamps() {
+        long startTime, endTime;
+
+        for (Talk talk : talks) {
+            startTime = talk.getStart().toInstant().toEpochMilli() / 1000;
+            endTime = talk.getEnd().toInstant().toEpochMilli() / 1000;
+
+            System.out.printf("<t:%d:t> to <t:%d:t> %s%n", startTime, endTime, talk.getTitle());
+        }
+    }
+
     private Room getRoom(int roomID) {
         for (Room room : rooms) {
             if (room.getId() == roomID) {
