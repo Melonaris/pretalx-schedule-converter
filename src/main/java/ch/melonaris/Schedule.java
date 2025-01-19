@@ -23,13 +23,9 @@ public class Schedule {
     private int numberOfDays;
 
     @JsonCreator
-    public Schedule(@JsonProperty("talks") ArrayList<Talk> talks,
-                    @JsonProperty("rooms") ArrayList<Room> rooms,
-                    @JsonProperty("speakers") ArrayList<Speaker> speakers,
-                    @JsonProperty("timezone") String timezone,
-                    @JsonProperty("event_start") String eventStart,
-                    @JsonProperty("event_end") String eventEnd) {
+    public Schedule(@JsonProperty("talks") ArrayList<Talk> talks, @JsonProperty("rooms") ArrayList<Room> rooms, @JsonProperty("speakers") ArrayList<Speaker> speakers, @JsonProperty("timezone") String timezone, @JsonProperty("event_start") String eventStart, @JsonProperty("event_end") String eventEnd) {
         this.talks = talks;
+        this.talks.sort(null);
         this.rooms = rooms;
         this.speakers = speakers;
         this.timezone = ZoneId.of(timezone);
@@ -102,6 +98,8 @@ public class Schedule {
                 }
             }
         }
+
+        talksOfDay.sort(null);
         return new Schedule(talksOfDay, this.rooms, this.speakers, this.timezone, this.eventStart, this.eventEnd);
     }
 
@@ -129,6 +127,7 @@ public class Schedule {
             }
         }
 
+        talksOfRooms.sort(null);
         return new Schedule(talksOfRooms, roomsOfSchedule, this.speakers, this.timezone, this.eventStart, this.eventEnd);
     }
     private Room getRoom(int roomID) {
