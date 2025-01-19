@@ -5,22 +5,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class InputValidation {
-    private static Scanner scanner;
-
-    public static void openScanner() {
-        scanner = new Scanner(System.in);
-    }
-
-    public static void closeScanner() {
-        scanner.close();
-    }
-
-    public static Scanner getScanner() {
-        return scanner;
-    }
 
     public static String date(String dateString) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = ch.melonaris.Scanner.getScanner();
         boolean isValidInput = true;
         Pattern datePattern = Pattern.compile("^\\d{2}(-|/|.)\\d{2}(-|/|.)\\d{4}$");
         Matcher dateFormat;
