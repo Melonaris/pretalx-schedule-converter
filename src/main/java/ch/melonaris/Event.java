@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Schedule {
+public class Event {
     private ArrayList<Talk> talks;
     private ArrayList<Room> rooms;
     private ArrayList<Speaker> speakers;
@@ -23,7 +23,7 @@ public class Schedule {
     private int numberOfDays;
 
     @JsonCreator
-    public Schedule(@JsonProperty("talks") ArrayList<Talk> talks, @JsonProperty("rooms") ArrayList<Room> rooms, @JsonProperty("speakers") ArrayList<Speaker> speakers, @JsonProperty("timezone") String timezone, @JsonProperty("event_start") String eventStart, @JsonProperty("event_end") String eventEnd) {
+    public Event(@JsonProperty("talks") ArrayList<Talk> talks, @JsonProperty("rooms") ArrayList<Room> rooms, @JsonProperty("speakers") ArrayList<Speaker> speakers, @JsonProperty("timezone") String timezone, @JsonProperty("event_start") String eventStart, @JsonProperty("event_end") String eventEnd) {
         this.talks = talks;
         this.talks.sort(null);
         this.rooms = rooms;
@@ -34,11 +34,11 @@ public class Schedule {
         this.numberOfDays = getDayNumber();
     }
 
-    public Schedule(String timezone, String eventStart, String eventEnd) {
-        new Schedule(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), timezone, eventStart, eventEnd);
+    public Event(String timezone, String eventStart, String eventEnd) {
+        new Event(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), timezone, eventStart, eventEnd);
     }
 
-    public Schedule(ArrayList<Talk> talks, ArrayList<Room> rooms, ArrayList<Speaker> speakers, ZoneId timezone, LocalDate eventStart, LocalDate eventEnd) {
+    public Event(ArrayList<Talk> talks, ArrayList<Room> rooms, ArrayList<Speaker> speakers, ZoneId timezone, LocalDate eventStart, LocalDate eventEnd) {
         this.talks = talks;
         this.rooms = rooms;
         this.speakers = speakers;
@@ -48,7 +48,7 @@ public class Schedule {
         this.numberOfDays = getDayNumber();
     }
 
-    public static Schedule loadData(String dataToLoad) {
+    public static Event loadData(String dataToLoad) {
         File file = new File(dataToLoad);
 
         if (file.exists()) {
@@ -58,7 +58,7 @@ public class Schedule {
         }
     }
 
-    public static Schedule loadDataFromFile(String filePathString) {
+    public static Event loadDataFromFile(String filePathString) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         Pattern fileEndingPattern = Pattern.compile(".*\\.json");
@@ -71,24 +71,24 @@ public class Schedule {
         File filePath = new File(filePathString);
 
         try {
-            return objectMapper.readValue(filePath, Schedule.class);
+            return objectMapper.readValue(filePath, Event.class);
         } catch (IOException e) {
             System.out.println("Error: Runtime Exception!");
             return null;
         }
     }
 
-    private static Schedule loadDataFromJsonString(String jsonString) {
+    private static Event loadDataFromJsonString(String jsonString) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(jsonString, Schedule.class);
+            return objectMapper.readValue(jsonString, Event.class);
         } catch (IOException e) {
             System.out.println("Error: IO Exception!");
             return null;
         }
     }
 
-    public Schedule getScheduleOfDays(int... dayNumbers) {
+    public Event getScheduleOfDays(int... dayNumbers) {
         ArrayList<Talk> talksOfDay = new ArrayList<>();
 
         for (Talk talk : talks) {
@@ -100,10 +100,10 @@ public class Schedule {
         }
 
         talksOfDay.sort(null);
-        return new Schedule(talksOfDay, this.rooms, this.speakers, this.timezone, this.eventStart, this.eventEnd);
+        return new Event(talksOfDay, this.rooms, this.speakers, this.timezone, this.eventStart, this.eventEnd);
     }
 
-    public Schedule getScheduleOfRooms(String... rooms) {
+    public Event getScheduleOfRooms(String... rooms) {
         ArrayList<Talk> talksOfRooms = new ArrayList<>();
         ArrayList<Room> roomsOfSchedule = new ArrayList<>();
         Room room;
@@ -138,7 +138,7 @@ public class Schedule {
         }
 
         talksOfRooms.sort(null);
-        return new Schedule(talksOfRooms, roomsOfSchedule, this.speakers, this.timezone, this.eventStart, this.eventEnd);
+        return new Event(talksOfRooms, roomsOfSchedule, this.speakers, this.timezone, this.eventStart, this.eventEnd);
     }
 
     public void printDiscordTimestamps() {
