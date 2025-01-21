@@ -7,9 +7,8 @@ import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
 
-public class Talk implements Comparable<Talk> {
+public class Session implements Comparable<Session> {
     private String code;
     private int id;
     private String title;
@@ -22,15 +21,15 @@ public class Talk implements Comparable<Talk> {
     private int room;
     private int duration;
 
-    public Talk(@JsonProperty("code") String code,
-                @JsonProperty("id") int id,
-                @JsonProperty("title") String title,
-                @JsonProperty("abstract") String description,
-                @JsonProperty("speakers") ArrayList<String> speakers,
-                @JsonProperty("start") String start,
-                @JsonProperty("end") String end,
-                @JsonProperty("room") int room,
-                @JsonProperty("duration") int duration) {
+    public Session(@JsonProperty("code") String code,
+                   @JsonProperty("id") int id,
+                   @JsonProperty("title") String title,
+                   @JsonProperty("abstract") String description,
+                   @JsonProperty("speakers") ArrayList<String> speakers,
+                   @JsonProperty("start") String start,
+                   @JsonProperty("end") String end,
+                   @JsonProperty("room") int room,
+                   @JsonProperty("duration") int duration) {
         this.code = code;
         this.id = id;
         this.title = title;
@@ -137,7 +136,7 @@ public class Talk implements Comparable<Talk> {
     }
 
     @Override
-    public int compareTo(Talk that) {
+    public int compareTo(Session that) {
         if (this.getStart().isBefore(that.getStart())) {
             return -1;
         } else if (this.getStart().isAfter(that.getStart())) {

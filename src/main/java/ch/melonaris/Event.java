@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Event {
-    private ArrayList<Talk> talks;
+    private ArrayList<Session> sessions;
     private ArrayList<Room> rooms;
     private ArrayList<Speaker> speakers;
     private ZoneId timezone;
@@ -26,6 +26,9 @@ public class Event {
     public Event(@JsonProperty("talks") ArrayList<Talk> talks, @JsonProperty("rooms") ArrayList<Room> rooms, @JsonProperty("speakers") ArrayList<Speaker> speakers, @JsonProperty("timezone") String timezone, @JsonProperty("event_start") String eventStart, @JsonProperty("event_end") String eventEnd) {
         this.talks = talks;
         this.talks.sort(null);
+    public Event(@JsonProperty("talks") ArrayList<Session> sessions,
+        this.sessions = sessions;
+        this.sessions.sort(null);
         this.rooms = rooms;
         this.speakers = speakers;
         this.timezone = ZoneId.of(timezone);
@@ -38,8 +41,8 @@ public class Event {
         new Event(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), timezone, eventStart, eventEnd);
     }
 
-    public Event(ArrayList<Talk> talks, ArrayList<Room> rooms, ArrayList<Speaker> speakers, ZoneId timezone, LocalDate eventStart, LocalDate eventEnd) {
-        this.talks = talks;
+    public Event(ArrayList<Session> sessions, ArrayList<Room> rooms, ArrayList<Speaker> speakers, ZoneId timezone, LocalDate eventStart, LocalDate eventEnd) {
+        this.sessions = sessions;
         this.rooms = rooms;
         this.speakers = speakers;
         this.timezone = timezone;
@@ -88,13 +91,13 @@ public class Event {
         }
     }
 
-    public Event getScheduleOfDays(int... dayNumbers) {
-        ArrayList<Talk> talksOfDay = new ArrayList<>();
+    public Event getSessionsOfDays(int... dayNumbers) {
+        ArrayList<Session> talksOfDay = new ArrayList<>();
 
-        for (Talk talk : talks) {
+        for (Session session : sessions) {
             for (int day : dayNumbers) {
-                if (talk.getStart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).equals(eventStart.plusDays(day - 1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))) {
-                    talksOfDay.add(talk);
+                if (session.getStart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")).equals(eventStart.plusDays(day - 1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))) {
+                    talksOfDay.add(session);
                 }
             }
         }
@@ -103,21 +106,21 @@ public class Event {
         return new Event(talksOfDay, this.rooms, this.speakers, this.timezone, this.eventStart, this.eventEnd);
     }
 
-    public Event getScheduleOfRooms(String... rooms) {
-        ArrayList<Talk> talksOfRooms = new ArrayList<>();
+    public Event getSessionsInRooms(String... rooms) {
+        ArrayList<Session> talksOfRooms = new ArrayList<>();
         ArrayList<Room> roomsOfSchedule = new ArrayList<>();
         Room room;
         Pattern roomNumberFormat = Pattern.compile("^\\d+$");
         Matcher roomNumber;
 
 
-        for (Talk talk : talks) {
+        for (Session session : sessions) {
             for (String roomIdentifier : rooms) {
                 roomNumber = roomNumberFormat.matcher(roomIdentifier);
 
                 if (roomNumber.find()) {
-                    if (talk.getRoom() == Integer.parseInt(roomIdentifier)) {
-                        talksOfRooms.add(talk);
+                    if (session.getRoom() == Integer.parseInt(roomIdentifier)) {
+                        talksOfRooms.add(session);
                         room = getRoom(Integer.parseInt(roomIdentifier));
 
                         if (!roomsOfSchedule.contains(room)) {
@@ -125,8 +128,8 @@ public class Event {
                         }
                     }
                 } else {
-                    if (talk.getRoom() == Objects.requireNonNull(getRoom(roomIdentifier)).getId()) {
-                        talksOfRooms.add(talk);
+                    if (session.getRoom() == Objects.requireNonNull(getRoom(roomIdentifier)).getId()) {
+                        talksOfRooms.add(session);
                         room = getRoom(roomIdentifier);
 
                         if (!roomsOfSchedule.contains(room)) {
@@ -144,11 +147,11 @@ public class Event {
     public void printDiscordTimestamps() {
         long startTime, endTime;
 
-        for (Talk talk : talks) {
-            startTime = talk.getStart().toInstant().toEpochMilli() / 1000;
-            endTime = talk.getEnd().toInstant().toEpochMilli() / 1000;
+        for (Session session : sessions) {
+            startTime = session.getStart().toInstant().toEpochMilli() / 1000;
+            endTime = session.getEnd().toInstant().toEpochMilli() / 1000;
 
-            System.out.printf("<t:%d:t> to <t:%d:t> %s%n", startTime, endTime, talk.getTitle());
+            System.out.printf("<t:%d:t> to <t:%d:t> %s%n", startTime, endTime, session.getTitle());
         }
     }
 
@@ -200,8 +203,8 @@ public class Event {
     private int getDayNumber() {
         ArrayList<String> days = new ArrayList<>();
 
-        for (Talk talk : talks) {
-            String date = talk.getStart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        for (Session session : sessions) {
+            String date = session.getStart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             if (!days.contains(date)) {
                 days.add(date);
             }
