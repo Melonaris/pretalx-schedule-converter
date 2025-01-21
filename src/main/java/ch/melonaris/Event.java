@@ -20,7 +20,7 @@ public class Event {
     private ZoneId timezone;
     private LocalDate eventStart;
     private LocalDate eventEnd;
-    private int numberOfDays;
+    private int eventDurationInDays;
 
     @JsonCreator
     public Event(@JsonProperty("talks") ArrayList<Talk> talks, @JsonProperty("rooms") ArrayList<Room> rooms, @JsonProperty("speakers") ArrayList<Speaker> speakers, @JsonProperty("timezone") String timezone, @JsonProperty("event_start") String eventStart, @JsonProperty("event_end") String eventEnd) {
@@ -34,7 +34,7 @@ public class Event {
         this.timezone = ZoneId.of(timezone);
         this.eventStart = LocalDate.parse(eventStart, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         this.eventEnd = LocalDate.parse(eventEnd, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        this.numberOfDays = getDayNumber();
+        this.eventDurationInDays = calculateNumberOfDays();
     }
 
     public Event(String timezone, String eventStart, String eventEnd) {
@@ -48,7 +48,7 @@ public class Event {
         this.timezone = timezone;
         this.eventStart = eventStart;
         this.eventEnd = eventEnd;
-        this.numberOfDays = getDayNumber();
+        this.eventDurationInDays = calculateNumberOfDays();
     }
 
     public static Event loadData(String dataToLoad) {
