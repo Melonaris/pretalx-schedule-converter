@@ -181,8 +181,10 @@ public class InputValidation {
         switch (formatOption) {
             case 1:
                 date = String.format("%s-%d-%d", year, num1, num2);
+                break;
             case 2:
                 date = String.format("%s-%d-%d", year, num2, num1);
+                break;
             default:
                 reenterDate();
         }
