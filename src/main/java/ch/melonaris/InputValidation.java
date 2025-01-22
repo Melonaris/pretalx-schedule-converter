@@ -181,9 +181,9 @@ public class InputValidation {
 
         switch (formatOption) {
             case 1:
-                date = String.format("%s-%d-%d",year, num1, num2);
+                date = String.format("%s-%d-%d", year, num1, num2);
             case 2:
-                date = String.format("%s-%d-%d",year, num2, num1);
+                date = String.format("%s-%d-%d", year, num2, num1);
             default:
                 reenterDate();
         }
@@ -224,7 +224,7 @@ public class InputValidation {
                 break;
         }
 
-        return month + "-" + day;
+        return String.format("%d-%d-%d", year, month, day);
     }
 
     private static boolean isLeapYear(int year) {
