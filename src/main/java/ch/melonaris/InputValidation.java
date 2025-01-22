@@ -285,7 +285,7 @@ public class InputValidation {
     }
 
     private static int extractHour(String timeString) {
-        Pattern hourFormat = Pattern.compile("^\\d{2}.*");
+        Pattern hourFormat = Pattern.compile("^(\\d{2}).*");
         Matcher hour = hourFormat.matcher(timeString);
 
         hour.find();
