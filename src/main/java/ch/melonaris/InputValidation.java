@@ -73,7 +73,7 @@ public class InputValidation {
     }
 
     private static String time(String hourString, String minuteString, String timeAppendix) {
-        TimeFormat timeformat = Settings.timeFormat;
+        TimeFormat timeformat = Settings.getTimeFormat();
 
         int hour = Integer.parseInt(hourString);
         int minute = Integer.parseInt(minuteString);
@@ -110,7 +110,7 @@ public class InputValidation {
 
         System.out.println("Error: Invalid time was entered!");
 
-        if (Settings.timeFormat == TimeFormat.MILITARY) {
+        if (Settings.getTimeFormat() == TimeFormat.MILITARY) {
             startTime = "00:00";
             endTime = "23:59";
         } else {
@@ -130,7 +130,7 @@ public class InputValidation {
         System.out.println("Reenter Minute:");
         minutes = InputScanner.getInput();
 
-        if (Settings.timeFormat == TimeFormat.STANDARD) {
+        if (Settings.getTimeFormat() == TimeFormat.STANDARD) {
             System.out.println("Reenter Time Appendix:");
             timeAppendix = InputScanner.getInput();
         } else {
@@ -159,8 +159,8 @@ public class InputValidation {
         }
 
         System.out.println("Confirm your Date Input:");
-        System.out.printf("1) %d. %s%n", num2, Month.of(num1).getDisplayName(TextStyle.FULL, Settings.localLanguage));
-        System.out.printf("2) %d. %s%n", num1, Month.of(num2).getDisplayName(TextStyle.FULL, Settings.localLanguage));
+        System.out.printf("1) %d. %s%n", num2, Month.of(num1).getDisplayName(TextStyle.FULL, Settings.getLocalLanguage()));
+        System.out.printf("2) %d. %s%n", num1, Month.of(num2).getDisplayName(TextStyle.FULL, Settings.getLocalLanguage()));
         System.out.println("3) enter another date");
 
         do {
@@ -232,7 +232,7 @@ public class InputValidation {
     }
 
     private static void throwInvalidDaysError(int year, int month, int maxDays) {
-        String monthName = Month.of(month).getDisplayName(TextStyle.FULL_STANDALONE, Settings.localLanguage);
+        String monthName = Month.of(month).getDisplayName(TextStyle.FULL_STANDALONE, Settings.getLocalLanguage());
         System.out.printf("Error: %s only has %d days.%n", monthName, maxDays);
         reenterDate();
     }
