@@ -191,10 +191,6 @@ public class InputValidation {
         return date;
     }
 
-    private static boolean isMilitaryTime(String timeAppendix) {
-        return timeAppendix == null;
-    }
-
     private static String validateDayNumber(int year, int month, int day) {
         switch (month) {
             case 1:
