@@ -2,14 +2,13 @@ package ch.melonaris;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Scanner;
+import java.time.format.TextStyle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class InputValidation {
 
     public static String date(String dateString) {
-        Scanner scanner = ch.melonaris.Scanner.getScanner();
         boolean isValidInput = true;
         Pattern datePattern = Pattern.compile("^\\d{2}(-|/|.)\\d{2}(-|/|.)\\d{4}$");
         Matcher dateFormat;
@@ -21,7 +20,7 @@ public class InputValidation {
             } else {
                 isValidInput = false;
                 System.out.println("Invalid input please use format yyyy-MM-dd!");
-                dateString = scanner.nextLine();
+                dateString = InputScanner.getInput();
             }
         } while (!isValidInput);
         return dateString;
@@ -131,10 +130,11 @@ public class InputValidation {
         String numString1, numString2;
 
         System.out.println("Reenter Month:");
-        numString1 = ch.melonaris.Scanner.getScanner().nextLine();
+        numString2 = InputScanner.getInput();
         System.out.println("Reenter Day:");
         numString2 = ch.melonaris.Scanner.getScanner().nextLine();
         validateMonthAndDay(String.valueOf(year), numString1, numString2);
+        numString3 = InputScanner.getInput();
     }
 
     private static String returnDateFormatErrorGetNewInput() {

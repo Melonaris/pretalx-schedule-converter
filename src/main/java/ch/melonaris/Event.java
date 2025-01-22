@@ -165,7 +165,6 @@ public class Event {
     }
 
     private Room getRoom(String roomName) {
-        java.util.Scanner scanner = Scanner.getScanner();
         ArrayList<Room> matchingRooms = new ArrayList<>();
         Pattern containsRoomNameFormat;
         Matcher containsRoomName;
