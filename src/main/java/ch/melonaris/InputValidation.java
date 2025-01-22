@@ -36,15 +36,16 @@ public class InputValidation {
             md_md_y = md_md_y_Format.matcher(dateString);
 
             if (md_md_y.find()) {
-                dateString = validateMonthAndDay(md_md_y.group(1), md_md_y.group(2), md_md_y.group(3));
+                dateString = date(md_md_y.group(3), md_md_y.group(1), md_md_y.group(2));
             } else if (y_md_md.find()) {
-                dateString = validateMonthAndDay(md_md_y.group(2), md_md_y.group(3), y_md_md.group(1));
+                dateString = date(y_md_md.group(1), md_md_y.group(2), md_md_y.group(3));
             } else {
                 dateString = returnDateFormatErrorGetNewInput();
             }
         } while (true);
     }
 
+    private static String date(String year, String numString1, String numString2) {
 
     private static String validateMonthAndDay(String numString1, String numString2, String year) {
         boolean isInputConfirmedByUser = false;
@@ -135,6 +136,7 @@ public class InputValidation {
         numString2 = ch.melonaris.Scanner.getScanner().nextLine();
         validateMonthAndDay(String.valueOf(year), numString1, numString2);
         numString3 = InputScanner.getInput();
+        date(numString1, numString2, numString3);
     }
 
     private static String returnDateFormatErrorGetNewInput() {
