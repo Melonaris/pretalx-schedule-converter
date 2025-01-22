@@ -53,7 +53,7 @@ public class InputValidation {
             tt = tt_tt_format.matcher(timeString);
 
             if (tt.find()) {
-                timeString = time(tt.group(1), tt.group(2), tt.group(3).toUpperCase());
+                timeString = time(tt.group(1), tt.group(2), tt.group(3));
                 break;
             } else {
                 timeString = returnTimeFormatErrorGetNewInput();
@@ -81,7 +81,7 @@ public class InputValidation {
         if (timeformat == TimeFormat.MILITARY) {
             return militaryTime(hour, minute);
         } else {
-            return amPmTime(hour, minute, timeAppendix);
+            return amPmTime(hour, minute, timeAppendix.toUpperCase());
         }
     }
 
