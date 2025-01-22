@@ -12,10 +12,10 @@ import java.util.regex.Pattern;
 public class InputValidation {
 
     public static LocalDateTime dateTime(String dateString, String timeString) {
-        return LocalDateTime.of(date(dateString), time(timeString));
+        return LocalDateTime.of(verifyDate(dateString), verifyTime(timeString));
     }
 
-    public static LocalDate date(String dateString) {
+    public static LocalDate verifyDate(String dateString) {
         int year, month, day;
         Pattern y_md_md_Format = Pattern.compile("^(\\d{4})[,/.\\s\\-](\\d{1,2})[,/.\\s\\-](\\d{1,2})$");
         Pattern md_md_y_Format = Pattern.compile("^(\\d{1,2})[,/.\\s\\-](\\d{1,2})[,/.\\s\\-](\\d{4})$");
@@ -26,10 +26,10 @@ public class InputValidation {
             md_md_y = md_md_y_Format.matcher(dateString);
 
             if (y_md_md.find()) {
-                dateString = date(y_md_md.group(1), y_md_md.group(2), y_md_md.group(3));
+                dateString = verifyDate(y_md_md.group(1), y_md_md.group(2), y_md_md.group(3));
                 break;
             } else if (md_md_y.find()) {
-                dateString = date(md_md_y.group(3), md_md_y.group(1), md_md_y.group(2));
+                dateString = verifyDate(md_md_y.group(3), md_md_y.group(1), md_md_y.group(2));
                 break;
             } else {
                 dateString = returnDateFormatErrorGetNewInput();
@@ -43,7 +43,7 @@ public class InputValidation {
         return LocalDate.of(year, month, day);
     }
 
-    public static LocalTime time(String timeString) {
+    public static LocalTime verifyTime(String timeString) {
         int hour, minute;
 
         Pattern tt_tt_format = Pattern.compile("^(\\d{1,2})[.:\\s\\-](\\d{1,2})[^AP]?(AM|PM|am|pm)?");
@@ -53,7 +53,7 @@ public class InputValidation {
             tt = tt_tt_format.matcher(timeString);
 
             if (tt.find()) {
-                timeString = time(tt.group(1), tt.group(2), tt.group(3));
+                timeString = verifyTime(tt.group(1), tt.group(2), tt.group(3));
                 break;
             } else {
                 timeString = returnTimeFormatErrorGetNewInput();
@@ -72,7 +72,7 @@ public class InputValidation {
         return InputScanner.getInput();
     }
 
-    private static String time(String hourString, String minuteString, String timeAppendix) {
+    private static String verifyTime(String hourString, String minuteString, String timeAppendix) {
         TimeFormat timeformat = Settings.getTimeFormat();
 
         int hour = Integer.parseInt(hourString);
@@ -136,10 +136,10 @@ public class InputValidation {
         } else {
             timeAppendix = null;
         }
-        return time(hours, minutes, timeAppendix);
+        return verifyTime(hours, minutes, timeAppendix);
     }
 
-    private static String date(String year, String numString1, String numString2) {
+    private static String verifyDate(String year, String numString1, String numString2) {
         String date = "";
         int formatOption;
 
@@ -258,7 +258,7 @@ public class InputValidation {
         numString2 = InputScanner.getInput();
         System.out.println("Reenter Day:");
         numString3 = InputScanner.getInput();
-        return date(numString1, numString2, numString3);
+        return verifyDate(numString1, numString2, numString3);
     }
 
     private static int extractYear(String dateString) {
