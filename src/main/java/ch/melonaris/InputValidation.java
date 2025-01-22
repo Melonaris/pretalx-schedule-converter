@@ -11,7 +11,7 @@ public class InputValidation {
 
     public static String date(String dateString) {
         boolean isValidInput = true;
-        Pattern datePattern = Pattern.compile("^\\d{2}(-|/|.)\\d{2}(-|/|.)\\d{4}$");
+        Pattern datePattern = Pattern.compile("^\\d{1,2}(-|/|.)\\d{1,2}(-|/|.)\\d{4}$");
         Matcher dateFormat;
         do {
             dateFormat = datePattern.matcher(dateString);
@@ -28,8 +28,8 @@ public class InputValidation {
     }
 
     public static LocalDateTime dateTime(String dateString, String timeSting) {
-        Pattern y_md_md_Format = Pattern.compile("^(\\d{4})[,/\\-.](\\d{2})[,/\\-.](\\d{2})$");
-        Pattern md_md_y_Format = Pattern.compile("^(\\d{2})[,/\\-.](\\d{2})[,/\\-.](\\d{4})$");
+        Pattern y_md_md_Format = Pattern.compile("^(\\d{4})[,/\\-.](\\d{1,2})[,/\\-.](\\d{1,2})$");
+        Pattern md_md_y_Format = Pattern.compile("^(\\d{1,2})[,/\\-.](\\d{1,2})[,/\\-.](\\d{4})$");
         Matcher y_md_md, md_md_y;
 
         do {
