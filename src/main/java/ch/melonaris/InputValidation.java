@@ -127,7 +127,7 @@ public class InputValidation {
                 break;
         }
 
-        return year + "-" + month + "-" + day;
+        return month + "-" + day;
     }
 
     private static boolean isLeapYear(int year) {
