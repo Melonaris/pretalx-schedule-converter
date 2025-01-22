@@ -3,6 +3,7 @@ package ch.melonaris;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.TextStyle;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,16 +38,101 @@ public class InputValidation {
 
             if (md_md_y.find()) {
                 dateString = date(md_md_y.group(3), md_md_y.group(1), md_md_y.group(2));
+                break;
             } else if (y_md_md.find()) {
                 dateString = date(y_md_md.group(1), md_md_y.group(2), md_md_y.group(3));
+                break;
             } else {
                 dateString = returnDateFormatErrorGetNewInput();
             }
         } while (true);
+
+        Pattern tt_tt_format = Pattern.compile("^(\\d{2})[:/-|\\s](\\d{2}).*(AM|PM)?");
+        Matcher tt;
+
+        do {
+            tt = tt_tt_format.matcher(timeSting);
+
+            if (tt.find()) {
+                timeSting = time(tt.group(1), tt.group(2), tt.group(3));
+            } else {
+                timeSting = returnTimeFormatErrorGetNewInput();
+            }
+        } while (true);
+    }
+
+    private static String returnTimeFormatErrorGetNewInput() {
+        System.out.println("Error: Invalid time format!");
+        System.out.println("Enter a valid date (hh:mm):");
+        return InputScanner.getInput();
+    }
+
+    private static String time(String hourString, String minuteString, String timeAppendix) {
+        TimeFormat timeformat = Settings.timeFormat;
+
+        int hour = Integer.parseInt(hourString);
+        int minute = Integer.parseInt(minuteString);
+
+        if (timeformat == TimeFormat.MILITARY) {
+            return militaryTime(hour, minute);
+        } else {
+            return amPmTime(hour, minute, timeAppendix);
+        }
+    }
+
+    private static String militaryTime(int hour, int minute) {
+        if (hour > 23 || minute > 59) {
+            throwInvalidTimeError();
+        }
+        return hour + ":" + minute;
+    }
+
+    private static String amPmTime(int hour, int minute, String timeAppendix) {
+        if (hour > 13 || minute > 59) {
+            throwInvalidTimeError();
+        }
+        if (Objects.equals(timeAppendix, "AM") && hour == 12) {
+            hour = 0;
+        } else {
+            hour += 12;
+        }
+        return hour + ":" + minute;
+    }
+
+
+    private static void throwInvalidTimeError() {
+        String startTime, endTime;
+        System.out.println("Error: Invalid time was entered!");
+        if (Settings.timeFormat == TimeFormat.MILITARY) {
+            startTime = "00:00";
+            endTime = "23:59";
+        } else {
+            startTime = "12:00 AM";
+            endTime = "11:59 PM";
+        }
+        System.out.printf("Please enter a time between %s and %s.", startTime, endTime);
+        reenterTime();
+    }
+
+    private static void reenterTime() {
+        String hours, minutes, timeAppendix = "";
+
+        System.out.println("Reenter Hour:");
+        hours = InputScanner.getInput();
+        System.out.println("Reenter Minute:");
+        minutes = InputScanner.getInput();
+
+        if (Settings.timeFormat == TimeFormat.STANDARD) {
+            System.out.println("Reenter Time Appendix:");
+            timeAppendix = InputScanner.getInput();
+        } else {
+            timeAppendix = null;
+        }
+        time(hours, minutes, timeAppendix);
     }
 
     private static String date(String year, String numString1, String numString2) {
-        String date = "", time;
+        String date = "";
         int formatOption;
 
         int num1 = Integer.parseInt(numString1);
@@ -94,6 +180,10 @@ public class InputValidation {
                 reenterDate();
         }
         return date;
+    }
+
+    private static boolean isMilitaryTime(String timeAppendix) {
+        return timeAppendix == null;
     }
 
     private static String validateDayNumber(int year, int month, int day) {
@@ -147,7 +237,7 @@ public class InputValidation {
 
     private static String returnDateFormatErrorGetNewInput() {
         System.out.println("Error: Invalid date format!");
-        System.out.println("(yyyy/mm/dd -> 2005/05/21)");
+        System.out.println("Enter a valid date (yyyy/mm/dd):");
         return InputScanner.getInput();
     }
 
