@@ -46,7 +46,7 @@ public class InputValidation {
     public static LocalTime time(String timeString) {
         int hour, minute;
 
-        Pattern tt_tt_format = Pattern.compile("^(\\d{1,2})[:\\s\\-](\\d{1,2})[^AP]?(AM|PM)?");
+        Pattern tt_tt_format = Pattern.compile("^(\\d{1,2})[.:\\s\\-](\\d{1,2})[^AP]?(AM|PM)?");
         Matcher tt;
 
         do {
