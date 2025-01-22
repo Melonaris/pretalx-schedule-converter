@@ -1,17 +1,24 @@
 package ch.melonaris;
 
-public class InputScanner {
-    private static java.util.Scanner inputScanner;
+import java.io.InputStream;
+import java.util.Scanner;
 
-    public static void Open() {
-        inputScanner = new java.util.Scanner(System.in);
+public class InputScanner {
+    private static Scanner inputScanner;
+
+    public static void open() {
+        inputScanner = new Scanner(System.in);
+    }
+
+    public static void open(InputStream inputStream) {
+        inputScanner = new Scanner(inputStream);
     }
 
     public static String getInput() {
         return inputScanner.nextLine();
     }
 
-    public static void closeScanner() {
+    public static void close() {
         inputScanner.close();
     }
 }
