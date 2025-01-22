@@ -1,6 +1,8 @@
 package ch.melonaris;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.Objects;
@@ -9,26 +11,12 @@ import java.util.regex.Pattern;
 
 public class InputValidation {
 
-    public static String date(String dateString) {
-        boolean isValidInput = true;
-        Pattern datePattern = Pattern.compile("^\\d{1,2}(-|/|.)\\d{1,2}(-|/|.)\\d{4}$");
-        Matcher dateFormat;
-        do {
-            dateFormat = datePattern.matcher(dateString);
-
-            if (dateFormat.find()) {
-                isValidInput = true;
-            } else {
-                isValidInput = false;
-                System.out.println("Invalid input please use format yyyy-MM-dd!");
-                dateString = InputScanner.getInput();
-            }
-        } while (!isValidInput);
-        return dateString;
+    public static LocalDateTime dateTime(String dateString, String timeString) {
+        return LocalDateTime.of(date(dateString), time(timeString));
     }
 
-    public static LocalDateTime dateTime(String dateString, String timeSting) {
-        int year, month, day, hour, minute;
+    public static LocalDate date(String dateString) {
+        int year, month, day;
         Pattern y_md_md_Format = Pattern.compile("^(\\d{4})[,/\\-.](\\d{1,2})[,/\\-.](\\d{1,2})$");
         Pattern md_md_y_Format = Pattern.compile("^(\\d{1,2})[,/\\-.](\\d{1,2})[,/\\-.](\\d{4})$");
         Matcher y_md_md, md_md_y;
@@ -52,24 +40,30 @@ public class InputValidation {
         month = extractMonth(dateString);
         day = extractDay(dateString);
 
+        return LocalDate.of(year, month, day);
+    }
+
+    public static LocalTime time(String timeString) {
+        int hour, minute;
+
         Pattern tt_tt_format = Pattern.compile("^(\\d{1,2})[:/-|\\s](\\d{1,2}).*(AM|PM)?");
         Matcher tt;
 
         do {
-            tt = tt_tt_format.matcher(timeSting);
+            tt = tt_tt_format.matcher(timeString);
 
             if (tt.find()) {
-                timeSting = time(tt.group(1), tt.group(2), tt.group(3));
+                timeString = time(tt.group(1), tt.group(2), tt.group(3));
                 break;
             } else {
-                timeSting = returnTimeFormatErrorGetNewInput();
+                timeString = returnTimeFormatErrorGetNewInput();
             }
         } while (true);
 
-        hour = extractHour(timeSting);
-        minute = extractMinute(timeSting);
+        hour = extractHour(timeString);
+        minute = extractMinute(timeString);
 
-        return LocalDateTime.of(year, month, day, hour, minute);
+        return LocalTime.of(hour, minute);
     }
 
     private static String returnTimeFormatErrorGetNewInput() {
@@ -113,7 +107,9 @@ public class InputValidation {
 
     private static void throwInvalidTimeError() {
         String startTime, endTime;
+
         System.out.println("Error: Invalid time was entered!");
+
         if (Settings.timeFormat == TimeFormat.MILITARY) {
             startTime = "00:00";
             endTime = "23:59";
@@ -121,6 +117,7 @@ public class InputValidation {
             startTime = "12:00 AM";
             endTime = "11:59 PM";
         }
+
         System.out.printf("Please enter a time between %s and %s.", startTime, endTime);
         reenterTime();
     }
@@ -209,7 +206,6 @@ public class InputValidation {
                 if (day > 31) {
                     throwInvalidDaysError(year, month, 31);
                 }
-                // needs 31
                 break;
             case 4:
             case 6:
