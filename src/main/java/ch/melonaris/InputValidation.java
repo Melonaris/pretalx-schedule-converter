@@ -17,8 +17,8 @@ public class InputValidation {
 
     public static LocalDate date(String dateString) {
         int year, month, day;
-        Pattern y_md_md_Format = Pattern.compile("^(\\d{4})[,/\\-.\\s](\\d{1,2})[,/\\-.\\s](\\d{1,2})$");
-        Pattern md_md_y_Format = Pattern.compile("^(\\d{1,2})[,/\\-.\\s](\\d{1,2})[,/\\-.\\s](\\d{4})$");
+        Pattern y_md_md_Format = Pattern.compile("^(\\d{4})[,/.\\s\\-](\\d{1,2})[,/.\\s\\-](\\d{1,2})$");
+        Pattern md_md_y_Format = Pattern.compile("^(\\d{1,2})[,/.\\s\\-](\\d{1,2})[,/.\\s\\-](\\d{4})$");
         Matcher y_md_md, md_md_y;
 
         do {
@@ -46,7 +46,7 @@ public class InputValidation {
     public static LocalTime time(String timeString) {
         int hour, minute;
 
-        Pattern tt_tt_format = Pattern.compile("^(\\d{1,2})[:/\\-|\\s.](\\d{1,2}).*(AM|PM)?");
+        Pattern tt_tt_format = Pattern.compile("^(\\d{1,2})[:\\s\\-](\\d{1,2})[^AP]?(AM|PM)?");
         Matcher tt;
 
         do {
@@ -87,25 +87,25 @@ public class InputValidation {
 
     private static String militaryTime(int hour, int minute) {
         if (hour > 23 || minute > 59) {
-            throwInvalidTimeError();
+            return throwInvalidTimeError();
         }
-        return hour + ":" + minute;
+            return hour + ":" + minute;
     }
 
     private static String amPmTime(int hour, int minute, String timeAppendix) {
-        if (hour > 13 || minute > 59) {
-            throwInvalidTimeError();
+        if (hour > 12 || minute > 59) {
+            return throwInvalidTimeError();
         }
         if (Objects.equals(timeAppendix, "AM") && hour == 12) {
             hour = 0;
-        } else {
+        } else if (Objects.equals(timeAppendix, "PM") && hour != 12) {
             hour += 12;
         }
         return hour + ":" + minute;
     }
 
 
-    private static void throwInvalidTimeError() {
+    private static String throwInvalidTimeError() {
         String startTime, endTime;
 
         System.out.println("Error: Invalid time was entered!");
@@ -118,11 +118,11 @@ public class InputValidation {
             endTime = "11:59 PM";
         }
 
-        System.out.printf("Please enter a time between %s and %s.", startTime, endTime);
-        reenterTime();
+        System.out.printf("Please enter a time between %s and %s.%n", startTime, endTime);
+        return reenterTime();
     }
 
-    private static void reenterTime() {
+    private static String reenterTime() {
         String hours, minutes, timeAppendix = "";
 
         System.out.println("Reenter Hour:");
@@ -136,7 +136,7 @@ public class InputValidation {
         } else {
             timeAppendix = null;
         }
-        time(hours, minutes, timeAppendix);
+        return time(hours, minutes, timeAppendix);
     }
 
     private static String date(String year, String numString1, String numString2) {
@@ -147,7 +147,7 @@ public class InputValidation {
         int num2 = Integer.parseInt(numString2);
 
         if (num1 > 12 && num2 > 12) {
-            throwInvalidMonthAndDaysError(Integer.parseInt(year));
+            return throwInvalidMonthAndDaysError(Integer.parseInt(year));
         }
 
         if (num1 > 12 && num2 < 13) {
@@ -171,7 +171,6 @@ public class InputValidation {
                     break;
                 }
             } catch (NumberFormatException e) {
-
                 throw new RuntimeException(e);
             }
 
@@ -204,7 +203,7 @@ public class InputValidation {
             case 10:
             case 12:
                 if (day > 31) {
-                    throwInvalidDaysError(year, month, 31);
+                    return throwInvalidDaysError(year, month, 31);
                 }
                 break;
             case 4:
@@ -212,14 +211,14 @@ public class InputValidation {
             case 9:
             case 11:
                 if (day > 30) {
-                    throwInvalidDaysError(year, month, 30);
+                    return throwInvalidDaysError(year, month, 30);
                 }
                 break;
             case 2:
                 if (isLeapYear(year) && day > 29) {
-                    throwInvalidDaysError(year, month, 29);
+                    return throwInvalidDaysError(year, month, 29);
                 } else if (!isLeapYear(year) && day > 28) {
-                    throwInvalidDaysError(year, month, 28);
+                    return throwInvalidDaysError(year, month, 28);
                 }
                 break;
         }
@@ -231,15 +230,15 @@ public class InputValidation {
         return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
     }
 
-    private static void throwInvalidDaysError(int year, int month, int maxDays) {
+    private static String throwInvalidDaysError(int year, int month, int maxDays) {
         String monthName = Month.of(month).getDisplayName(TextStyle.FULL_STANDALONE, Settings.getLocalLanguage());
-        System.out.printf("Error: %s only has %d days.%n", monthName, maxDays);
-        reenterDate();
+        System.out.printf("Error: %s only has %d days!%n", monthName, maxDays);
+        return reenterDate();
     }
 
-    private static void throwInvalidMonthAndDaysError(int year) {
+    private static String throwInvalidMonthAndDaysError(int year) {
         System.out.println("Error: Month and day numbers are invalid!");
-        reenterDate();
+        return reenterDate();
     }
 
     private static String returnDateFormatErrorGetNewInput() {
@@ -248,7 +247,7 @@ public class InputValidation {
         return InputScanner.getInput();
     }
 
-    private static void reenterDate() {
+    private static String reenterDate() {
         String numString1, numString2, numString3;
 
         System.out.println("Reenter Year:");
@@ -257,7 +256,7 @@ public class InputValidation {
         numString2 = InputScanner.getInput();
         System.out.println("Reenter Day:");
         numString3 = InputScanner.getInput();
-        date(numString1, numString2, numString3);
+        return date(numString1, numString2, numString3);
     }
 
     private static int extractYear(String dateString) {
