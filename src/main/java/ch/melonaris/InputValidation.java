@@ -134,11 +134,13 @@ public class InputValidation {
     }
 
     private static void reenterDate() {
+        String numString1, numString2, numString3;
+
+        System.out.println("Reenter Year:");
+        numString1 = InputScanner.getInput();
         System.out.println("Reenter Month:");
         numString2 = InputScanner.getInput();
         System.out.println("Reenter Day:");
-        numString2 = ch.melonaris.Scanner.getScanner().nextLine();
-        validateMonthAndDay(String.valueOf(year), numString1, numString2);
         numString3 = InputScanner.getInput();
         date(numString1, numString2, numString3);
     }
