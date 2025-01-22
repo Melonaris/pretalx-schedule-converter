@@ -17,19 +17,19 @@ public class InputValidation {
 
     public static LocalDate date(String dateString) {
         int year, month, day;
-        Pattern y_md_md_Format = Pattern.compile("^(\\d{4})[,/\\-.](\\d{1,2})[,/\\-.](\\d{1,2})$");
-        Pattern md_md_y_Format = Pattern.compile("^(\\d{1,2})[,/\\-.](\\d{1,2})[,/\\-.](\\d{4})$");
+        Pattern y_md_md_Format = Pattern.compile("^(\\d{4})[,/\\-.\\s](\\d{1,2})[,/\\-.\\s](\\d{1,2})$");
+        Pattern md_md_y_Format = Pattern.compile("^(\\d{1,2})[,/\\-.\\s](\\d{1,2})[,/\\-.\\s](\\d{4})$");
         Matcher y_md_md, md_md_y;
 
         do {
             y_md_md = y_md_md_Format.matcher(dateString);
             md_md_y = md_md_y_Format.matcher(dateString);
 
-            if (md_md_y.find()) {
-                dateString = date(md_md_y.group(3), md_md_y.group(1), md_md_y.group(2));
+            if (y_md_md.find()) {
+                dateString = date(y_md_md.group(1), y_md_md.group(2), y_md_md.group(3));
                 break;
-            } else if (y_md_md.find()) {
-                dateString = date(y_md_md.group(1), md_md_y.group(2), md_md_y.group(3));
+            } else if (md_md_y.find()) {
+                dateString = date(md_md_y.group(3), md_md_y.group(1), md_md_y.group(2));
                 break;
             } else {
                 dateString = returnDateFormatErrorGetNewInput();
