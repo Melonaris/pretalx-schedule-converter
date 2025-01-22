@@ -159,8 +159,8 @@ public class InputValidation {
         }
 
         System.out.println("Confirm your Date Input:");
-        System.out.println("1) " + num2 + " " + Month.of(num1).getDisplayName(TextStyle.FULL, Settings.localLanguage));
-        System.out.println("2) " + num1 + " " + Month.of(num2).getDisplayName(TextStyle.FULL, Settings.localLanguage));
+        System.out.printf("1) %d. %s%n", num2, Month.of(num1).getDisplayName(TextStyle.FULL, Settings.localLanguage));
+        System.out.printf("2) %d. %s%n", num1, Month.of(num2).getDisplayName(TextStyle.FULL, Settings.localLanguage));
         System.out.println("3) enter another date");
 
         do {
@@ -181,9 +181,9 @@ public class InputValidation {
 
         switch (formatOption) {
             case 1:
-                date = year + "-" + num1 + "-" + num2;
+                date = String.format("%s-%d-%d",year, num1, num2);
             case 2:
-                date = year + "-" + num2 + "-" + num1;
+                date = String.format("%s-%d-%d",year, num2, num1);
             default:
                 reenterDate();
         }
@@ -233,12 +233,12 @@ public class InputValidation {
 
     private static void throwInvalidDaysError(int year, int month, int maxDays) {
         String monthName = Month.of(month).getDisplayName(TextStyle.FULL_STANDALONE, Settings.localLanguage);
-        System.out.println("Error: " + monthName + "only has " + maxDays + " days!");
+        System.out.printf("Error: %s only has %d days.%n", monthName, maxDays);
         reenterDate();
     }
 
     private static void throwInvalidMonthAndDaysError(int year) {
-        System.out.println("Error: Month and Day numbers are invalid!");
+        System.out.println("Error: Month and day numbers are invalid!");
         reenterDate();
     }
 
