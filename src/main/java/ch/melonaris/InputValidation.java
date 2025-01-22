@@ -47,7 +47,7 @@ public class InputValidation {
             }
         } while (true);
 
-        Pattern tt_tt_format = Pattern.compile("^(\\d{2})[:/-|\\s](\\d{2}).*(AM|PM)?");
+        Pattern tt_tt_format = Pattern.compile("^(\\d{1,2})[:/-|\\s](\\d{1,2}).*(AM|PM)?");
         Matcher tt;
 
         do {
