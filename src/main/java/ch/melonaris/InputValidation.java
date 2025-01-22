@@ -46,7 +46,7 @@ public class InputValidation {
     public static LocalTime time(String timeString) {
         int hour, minute;
 
-        Pattern tt_tt_format = Pattern.compile("^(\\d{1,2})[:/-|\\s.](\\d{1,2}).*(AM|PM)?");
+        Pattern tt_tt_format = Pattern.compile("^(\\d{1,2})[:/\\-|\\s.](\\d{1,2}).*(AM|PM)?");
         Matcher tt;
 
         do {
@@ -285,7 +285,7 @@ public class InputValidation {
     }
 
     private static int extractHour(String timeString) {
-        Pattern hourFormat = Pattern.compile("^(\\d{2}).*");
+        Pattern hourFormat = Pattern.compile("^(\\d{1,2}).*");
         Matcher hour = hourFormat.matcher(timeString);
 
         hour.find();
@@ -293,7 +293,7 @@ public class InputValidation {
     }
 
     private static int extractMinute(String timeString) {
-        Pattern minuteFormat = Pattern.compile("^\\d{2}:(\\d{1,2}).*");
+        Pattern minuteFormat = Pattern.compile("^\\d{1,2}:(\\d{1,2}).*");
         Matcher minute = minuteFormat.matcher(timeString);
 
         minute.find();
