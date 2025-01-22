@@ -117,19 +117,23 @@ public class InputValidation {
     }
 
     private static void throwInvalidDaysError(int year, int month, int maxDays) {
-        String monthName = String.valueOf(Month.of(month));
-        System.out.println("Error: " + monthName.charAt(0) + monthName.substring(1).toLowerCase() + "only has " + maxDays + " days!");
-        reenterDayAndMonth(year);
+        String monthName = Month.of(month).getDisplayName(TextStyle.FULL_STANDALONE, Settings.localLanguage);
+        System.out.println("Error: " + monthName + "only has " + maxDays + " days!");
+        reenterDate();
     }
 
     private static void throwInvalidMonthAndDaysError(int year) {
-        System.out.println("Error: Invalid Date Format!");
-        reenterDayAndMonth(year);
+        System.out.println("Error: Month and Day numbers are invalid!");
+        reenterDate();
     }
 
-    private static void reenterDayAndMonth(int year) {
-        String numString1, numString2;
+    private static String returnDateFormatErrorGetNewInput() {
+        System.out.println("Error: Invalid date format!");
+        System.out.println("(yyyy/mm/dd -> 2005/05/21)");
+        return InputScanner.getInput();
+    }
 
+    private static void reenterDate() {
         System.out.println("Reenter Month:");
         numString2 = InputScanner.getInput();
         System.out.println("Reenter Day:");
@@ -137,11 +141,5 @@ public class InputValidation {
         validateMonthAndDay(String.valueOf(year), numString1, numString2);
         numString3 = InputScanner.getInput();
         date(numString1, numString2, numString3);
-    }
-
-    private static String returnDateFormatErrorGetNewInput() {
-        System.out.println("Error: Invalid date format!");
-        System.out.println("(yyyy/mm/dd -> 2005/05/21)");
-        return ch.melonaris.Scanner.getScanner().nextLine();
     }
 }
