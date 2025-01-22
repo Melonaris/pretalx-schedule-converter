@@ -46,36 +46,54 @@ public class InputValidation {
     }
 
     private static String date(String year, String numString1, String numString2) {
+        String date = "", time;
+        int formatOption;
 
-    private static String validateMonthAndDay(String numString1, String numString2, String year) {
-        boolean isInputConfirmedByUser = false;
+        int num1 = Integer.parseInt(numString1);
+        int num2 = Integer.parseInt(numString2);
+
+        if (num1 > 12 && num2 > 12) {
+            throwInvalidMonthAndDaysError(Integer.parseInt(year));
+        }
+
+        if (num1 > 12 && num2 < 13) {
+            return validateDayNumber(Integer.parseInt(year), num2, num1);
+        }
+
+        if (num2 > 12 && num1 < 13) {
+            return validateDayNumber(Integer.parseInt(year), num1, num2);
+        }
+
+        System.out.println("Confirm your Date Input:");
+        System.out.println("1) " + num2 + " " + Month.of(num1).getDisplayName(TextStyle.FULL, Settings.localLanguage));
+        System.out.println("2) " + num1 + " " + Month.of(num2).getDisplayName(TextStyle.FULL, Settings.localLanguage));
+        System.out.println("3) enter another date");
 
         do {
-            int num1 = Integer.parseInt(numString1);
-            int num2 = Integer.parseInt(numString2);
+            try {
+                formatOption = Integer.parseInt(InputScanner.getInput());
 
-            if (num1 > 12 && num2 > 12) {
-                throwInvalidMonthAndDaysError(Integer.parseInt(year));
+                if (formatOption < 4 && formatOption > 0) {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+
+                throw new RuntimeException(e);
             }
 
-            if (num1 > 12 && num2 < 13) {
-                return validateDayNumber(Integer.parseInt(year), num2, num1);
-            }
+            System.out.println("Error: expected real number input!");
+            System.out.println("Please enter a Number between 1 and 3.");
+        } while (true);
 
-            if (num2 > 12 && num1 < 13) {
-                return validateDayNumber(Integer.parseInt(year), num1, num2);
-            }
-
-            // if non higher than 12 -> confirm day and month
-
-            System.out.println("Confirm your Date Input:");
-            System.out.println("1) " + convertToMonthString(num1) + num2);
-            System.out.println("2) " + convertToMonthString(num2) + num1);
-
-
-        } while (isInputConfirmedByUser);
-
-        return null;
+        switch (formatOption) {
+            case 1:
+                date = year + "-" + num1 + "-" + num2;
+            case 2:
+                date = year + "-" + num2 + "-" + num1;
+            default:
+                reenterDate();
+        }
+        return date;
     }
 
     private static String validateDayNumber(int year, int month, int day) {
@@ -109,7 +127,7 @@ public class InputValidation {
                 break;
         }
 
-        return month + "-" + day;
+        return year + "-" + month + "-" + day;
     }
 
     private static boolean isLeapYear(int year) {
