@@ -171,7 +171,7 @@ public class InputValidation {
                     break;
                 }
             } catch (NumberFormatException e) {
-                throw new RuntimeException(e);
+                throw new NumberFormatException();
             }
 
             System.out.println("Error: expected real number input!");
@@ -186,7 +186,7 @@ public class InputValidation {
                 date = String.format("%s-%d-%d", year, num2, num1);
                 break;
             default:
-                reenterDate();
+                date = reenterDate();
         }
         return date;
     }
