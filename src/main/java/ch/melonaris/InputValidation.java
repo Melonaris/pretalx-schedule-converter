@@ -150,11 +150,11 @@ public class InputValidation {
             return throwInvalidMonthAndDaysError(Integer.parseInt(year));
         }
 
-        if (num1 > 12 && num2 < 13) {
+        if (num1 > 12) {
             return validateDayNumber(Integer.parseInt(year), num2, num1);
         }
 
-        if (num2 > 12 && num1 < 13) {
+        if (num2 > 12) {
             return validateDayNumber(Integer.parseInt(year), num1, num2);
         }
 
