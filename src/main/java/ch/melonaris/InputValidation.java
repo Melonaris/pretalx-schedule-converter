@@ -46,14 +46,14 @@ public class InputValidation {
     public static LocalTime time(String timeString) {
         int hour, minute;
 
-        Pattern tt_tt_format = Pattern.compile("^(\\d{1,2})[.:\\s\\-](\\d{1,2})[^AP]?(AM|PM)?");
+        Pattern tt_tt_format = Pattern.compile("^(\\d{1,2})[.:\\s\\-](\\d{1,2})[^AP]?(AM|PM|am|pm)?");
         Matcher tt;
 
         do {
             tt = tt_tt_format.matcher(timeString);
 
             if (tt.find()) {
-                timeString = time(tt.group(1), tt.group(2), tt.group(3));
+                timeString = time(tt.group(1), tt.group(2), tt.group(3).toUpperCase());
                 break;
             } else {
                 timeString = returnTimeFormatErrorGetNewInput();
