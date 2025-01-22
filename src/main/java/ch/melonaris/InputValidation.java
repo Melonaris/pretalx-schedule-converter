@@ -261,16 +261,18 @@ public class InputValidation {
     }
 
     private static int extractYear(String dateString) {
-        Pattern yearFormat = Pattern.compile("^(\\d{4})");
+        Pattern yearFormat = Pattern.compile("^(\\d{4}).*");
         Matcher year = yearFormat.matcher(dateString);
 
+        year.find();
         return Integer.parseInt(year.group(1));
     }
 
     private static int extractMonth(String dateString) {
-        Pattern monthFormat = Pattern.compile("^\\d{4}-(\\d{1,2})");
+        Pattern monthFormat = Pattern.compile("^\\d{4}-(\\d{1,2}).*");
         Matcher month = monthFormat.matcher(dateString);
 
+        month.find();
         return Integer.parseInt(month.group(1));
     }
 
@@ -278,20 +280,23 @@ public class InputValidation {
         Pattern dayFormat = Pattern.compile("^\\d{4}-\\d{1,2}-(\\d{1,2})");
         Matcher day = dayFormat.matcher(dateString);
 
+        day.find();
         return Integer.parseInt(day.group(1));
     }
 
-    private static int extractHour(String dateString) {
-        Pattern hourFormat = Pattern.compile("^\\d{2}");
-        Matcher hour = hourFormat.matcher(dateString);
+    private static int extractHour(String timeString) {
+        Pattern hourFormat = Pattern.compile("^\\d{2}.*");
+        Matcher hour = hourFormat.matcher(timeString);
 
+        hour.find();
         return Integer.parseInt(hour.group(1));
     }
 
-    private static int extractMinute(String dateString) {
-        Pattern minuteFormat = Pattern.compile("^\\d{2}:(\\d{1,2})");
-        Matcher minute = minuteFormat.matcher(dateString);
+    private static int extractMinute(String timeString) {
+        Pattern minuteFormat = Pattern.compile("^\\d{2}:(\\d{1,2}).*");
+        Matcher minute = minuteFormat.matcher(timeString);
 
+        minute.find();
         return Integer.parseInt(minute.group(1));
     }
 }
