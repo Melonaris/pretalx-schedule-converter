@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Session implements Comparable<Session> {
     private String code;
@@ -88,7 +89,7 @@ public class Session implements Comparable<Session> {
     }
 
     public void setStart(String start) {
-        this.start = ZonedDateTime.parse(start, DateTimeFormatter.ISO_DATE_TIME);;
+        this.start = ZonedDateTime.parse(start, DateTimeFormatter.ISO_DATE_TIME);
     }
 
     @JsonIgnore
@@ -106,7 +107,7 @@ public class Session implements Comparable<Session> {
     }
 
     public void setEnd(String end) {
-        this.end = ZonedDateTime.parse(end, DateTimeFormatter.ISO_DATE_TIME);;
+        this.end = ZonedDateTime.parse(end, DateTimeFormatter.ISO_DATE_TIME);
     }
 
     @JsonIgnore
@@ -137,16 +138,9 @@ public class Session implements Comparable<Session> {
 
     @Override
     public int compareTo(Session that) {
-        if (this.getStart().isBefore(that.getStart())) {
-            return -1;
-        } else if (this.getStart().isAfter(that.getStart())) {
-            return 1;
-        }
-        if (this.getEnd().isBefore(that.getEnd())) {
-            return -1;
-        } else if (this.getEnd().isAfter(that.getEnd())){
-            return 1;
-        }
-        return 0;
+        return Comparator.comparing(Session::getStart)
+                .thenComparing(Session::getEnd)
+                .thenComparing((Session s) -> s.getTitle().toLowerCase().replaceAll("\\s", ""))
+                .compare(this, that);
     }
 }
